@@ -1,0 +1,18 @@
+name: C++ CI
+
+on:
+  pull_request:
+    branches: [ "dev", "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Compile with Make
+      run: make
+      
+    - name: Clean up (Test fclean)
+      run: make fclean
