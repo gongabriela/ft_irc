@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alde-alm <alde-alm@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/01 12:58:07 by alde-alm          #+#    #+#             */
-/*   Updated: 2026/07/01 12:58:30 by alde-alm         ###   ########.fr       */
+/*   Updated: 2026/07/03 11:44:02 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Client.hpp"
+#include "../include/Client.hpp"
 
-Client::Client(int fd) : _fd(fd) {}
+Client::Client(int fd) : _fd(fd), _isAuthenticated(false), _hasPassword(false) {}
 
 Client::~Client() {}
 
@@ -54,4 +54,46 @@ bool Client::hasDataToSend() const
 std::string &Client::getSendBuffer()
 {
 	return _sendBuffer;
+}
+
+// ==== Getters & Setters for Client Info ====
+
+bool Client::isAuthenticated() const {
+    return _isAuthenticated;
+}
+
+void Client::setAuthenticated(bool status) {
+    _isAuthenticated = status;
+}
+
+bool Client::hasPassword() const {
+    return _hasPassword;
+}
+
+void Client::setHasPassword(bool status) {
+    _hasPassword = status;
+}
+
+const std::string& Client::getNickname() const {
+    return _nickname;
+}
+
+void Client::setNickname(const std::string& nickname) {
+    _nickname = nickname;
+}
+
+const std::string& Client::getUsername() const {
+    return _username;
+}
+
+void Client::setUsername(const std::string& username) {
+    _username = username;
+}
+
+const std::string& Client::getRealname() const {
+    return _realname;
+}
+
+void Client::setRealname(const std::string& realname) {
+    _realname = realname;
 }
