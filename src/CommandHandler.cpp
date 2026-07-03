@@ -6,12 +6,13 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/03 14:19:34 by ggoncalv          #+#    #+#             */
-/*   Updated: 2026/07/03 14:24:05 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/03 14:43:27 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/CommandHandler.hpp"
 #include "../include/Server.hpp"
+#include "../include/PassCommand.hpp"
 #include <iostream>
 
 /**
@@ -19,8 +20,7 @@
  * @param server Reference to the main IRC server to access global configurations (e.g., password).
  */
 CommandHandler::CommandHandler(Server& server) : _server(server) {
-    // Future commands will be registered here.
-    // Example: _commands["PASS"] = new PassCommand();
+    _commands["PASS"] = new PassCommand(server);
 }
 
 /**
