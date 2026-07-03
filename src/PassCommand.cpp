@@ -1,5 +1,18 @@
-#include "PassCommand.hpp"
-#include "Server.hpp"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   PassCommand.cpp                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/07/03 14:42:42 by ggoncalv          #+#    #+#             */
+/*   Updated: 2026/07/03 16:52:29 by ggoncalv         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../include/PassCommand.hpp"
+#include "../include/Server.hpp"
+#include "../include/Replies.hpp"
 #include <iostream>
 
 /**
@@ -27,24 +40,21 @@ PassCommand::~PassCommand() {}
 std::vector<std::string> PassCommand::execute(Client& client, const ParsedCommand& cmd) {
     std::vector<std::string> replies;
 
-    // 1. Check if the client is already fully authenticated
     if (client.isAuthenticated()) {
-        replies.push_back(":server 462 * :Unauthorized command (already registered)");
+        replies.push_back(":server " ERR_ALREADYREGISTRED_CODE " * :" ERR_ALREADYREGISTRED_MSG);
         return replies;
     }
 
-    // 2. Check if the password argument was provided
     if (cmd.args.empty()) {
-        replies.push_back(":server 461 * PASS :Not enough parameters");
+        replies.push_back(":server " ERR_NEEDMOREPARAMS_CODE " PASS :" ERR_NEEDMOREPARAMS_MSG);
         return replies;
     }
 
-    // 3. Validate the password
     if (cmd.args[0] == _server.getPassword()) {
         client.setHasPassword(true);
         std::cout << "[PassCommand] Client FD " << client.getFd() << " provided the correct password." << std::endl;
     } else {
-        replies.push_back(":server 464 * :Password incorrect");
+        replies.push_back(":server " ERR_PASSWDMISMATCH_CODE " * :" ERR_PASSWDMISMATCH_MSG);
         std::cout << "[PassCommand] Client FD " << client.getFd() << " provided an incorrect password." << std::endl;
     }
 

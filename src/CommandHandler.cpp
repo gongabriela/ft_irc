@@ -6,13 +6,14 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/03 14:19:34 by ggoncalv          #+#    #+#             */
-/*   Updated: 2026/07/03 14:43:27 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/03 16:52:04 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/CommandHandler.hpp"
 #include "../include/Server.hpp"
 #include "../include/PassCommand.hpp"
+#include "../include/Replies.hpp"
 #include <iostream>
 
 /**
@@ -52,6 +53,7 @@ std::vector<std::string> CommandHandler::execute(Client& client, const ParsedCom
     if (it != _commands.end()) {
         replies = it->second->execute(client, cmd);
     } else {
+        replies.push_back(":server " ERR_UNKNOWNCOMMAND_CODE " " + cmd.command + " :" ERR_UNKNOWNCOMMAND_MSG);
         std::cout << "[CommandHandler] Unknown command received: " << cmd.command << std::endl;
     }
 
