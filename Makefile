@@ -12,7 +12,7 @@ INCLUDES := -I./include
 VALGRIND := valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes
 GDB := gdb -q --tui
 
-SRCS := src/main.cpp src/Server.cpp src/Poller.cpp src/Client.cpp
+SRCS := src/main.cpp src/Server.cpp src/Poller.cpp src/Client.cpp src/Parser.cpp
 OBJS := $(SRCS:.cpp=.o)
 
 %.o: %.cpp
