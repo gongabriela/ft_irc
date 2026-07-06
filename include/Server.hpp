@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/01 12:57:59 by alde-alm          #+#    #+#             */
-/*   Updated: 2026/07/03 14:54:36 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/06 14:39:39 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ public:
 	void runIrc();
 
 	const std::string& getPassword() const;
+	bool isNicknameInUse(const std::string& nickname) const;
 };
 
 #endif

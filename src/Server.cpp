@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/01 12:56:39 by alde-alm          #+#    #+#             */
-/*   Updated: 2026/07/03 14:37:25 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/06 14:40:10 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,4 +178,14 @@ void Server::disconnectClient(int fd)
 
 const std::string& Server::getPassword() const {
     return _password;
+}
+
+bool Server::isNicknameInUse(const std::string& nickname) const {
+    std::map<int, Client*>::const_iterator it;
+    for (it = _clients.begin(); it != _clients.end(); ++it) {
+        if (it->second->getNickname() == nickname) {
+            return true;
+        }
+    }
+    return false;
 }
