@@ -7,6 +7,13 @@ NickCommand::NickCommand(Server& server) : _server(server) {}
 
 NickCommand::~NickCommand() {}
 
+static bool isValidNickname(const std::string& nick) {
+    if (nick.empty() || nick.find_first_of(" #:,*?!@.") != std::string::npos) {
+        return false;
+    }
+    return true;
+}
+
 std::vector<std::string> NickCommand::execute(Client& client, const ParsedCommand& cmd) {
     std::vector<std::string> replies;
 
@@ -16,12 +23,22 @@ std::vector<std::string> NickCommand::execute(Client& client, const ParsedComman
     }
 
     std::string nickname = cmd.args[0];
-    
-    // TODO: add invalid chars verification (ERR_ERRONEUSNICKNAME)
-    // TODO: add verification if the nick is already in use (ERR_NICKNAMEINUSE)
-
+    if (!isValidNickname(nickname)) {
+        replies.push_back(":server " ERR_ERRONEUSNICKNAME_CODE " " + nickname + " :" ERR_ERRONEUSNICKNAME_MSG);
+        return replies;
+    }
+    if (_server.isNicknameInUse(nickname)) {
+        replies.push_back(":server " ERR_NICKNAMEINUSE_CODE " " + nickname + " :" ERR_NICKNAMEINUSE_MSG);
+        return replies;
+    }
     client.setNickname(nickname);
     std::cout << "[NickCommand] Client FD " << client.getFd() << " set nickname to: " << nickname << std::endl;
+
+    if (!client.isAuthenticated() && client.hasPassword() && !client.getNickname().empty() && !client.getUsername().empty()) {
+        client.setAuthenticated(true);
+        replies.push_back(":server " RPL_WELCOME_CODE " " + client.getNickname() + " :" RPL_WELCOME_MSG + client.getNickname());
+        std::cout << "[Server] Client FD " << client.getFd() << " is now fully authenticated!" << std::endl;
+    }
 
     return replies;
 }

@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/03 15:22:27 by ggoncalv          #+#    #+#             */
-/*   Updated: 2026/07/06 11:05:58 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/06 14:00:24 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,10 @@
 
 #define ERR_NICKNAMEINUSE_CODE "433"
 #define ERR_NICKNAMEINUSE_MSG "Nickname is already in use"
+
+// === welcome message === 
+
+#define RPL_WELCOME_CODE "001"
+#define RPL_WELCOME_MSG "Welcome to the ft_irc Network, "
 
 #endif
