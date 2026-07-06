@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/01 12:57:59 by alde-alm          #+#    #+#             */
-/*   Updated: 2026/07/06 14:39:39 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/06 15:10:11 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include "Client.hpp"
 #include "Parser.hpp"
 #include "CommandHandler.hpp"
+#include "Channel.hpp"
 
 class Server
 {
@@ -28,7 +29,8 @@ private:
 
 	Poller poller;					  // Integrated Poller - manages all FDs
 	std::map<int, Client *> _clients; // map of fd to Client pointer
-
+	std::map<std::string, Channel*> _channels;
+	
 	void initSocket();												 // Create, configure and put the socket (FD) into listen
 	void acceptNewClient();											 // Accept new connections
 	void handleRead(int fd, Parser &parser, CommandHandler &handle); // Handle reading data

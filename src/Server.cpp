@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/01 12:56:39 by alde-alm          #+#    #+#             */
-/*   Updated: 2026/07/06 14:40:10 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/06 15:15:00 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,11 @@ Server::~Server()
 	{
 		close(it->first);  // Socket's fd
 		delete it->second; // Client's object pointer
+	}
+	std::map<std::string, Channel*>::iterator it_chan;
+	for (it_chan = _channels.begin(); it_chan != _channels.end(); ++it_chan)
+	{
+		delete it_chan->second;
 	}
 }
 
