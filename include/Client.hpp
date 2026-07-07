@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/01 12:57:24 by alde-alm          #+#    #+#             */
-/*   Updated: 2026/07/03 11:40:04 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/07 14:41:36 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ public:
 
     const std::string& getRealname() const;
     void setRealname(const std::string& realname);
+
+	std::string getPrefix() const;
 };
 
 #endif
