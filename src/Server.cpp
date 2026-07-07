@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/01 12:56:39 by alde-alm          #+#    #+#             */
-/*   Updated: 2026/07/06 15:15:00 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/07 07:33:54 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,4 +193,16 @@ bool Server::isNicknameInUse(const std::string& nickname) const {
         }
     }
     return false;
+}
+
+Channel* Server::getChannel(const std::string& name) {
+    std::map<std::string, Channel*>::iterator it = _channels.find(name);
+    if (it != _channels.end()) {
+        return it->second;
+    }
+    return NULL;
+}
+
+void Server::addChannel(const std::string& name, Channel* channel) {
+    _channels[name] = channel;
 }
