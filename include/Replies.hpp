@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/03 15:22:27 by ggoncalv          #+#    #+#             */
-/*   Updated: 2026/07/07 07:50:34 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/07 17:21:59 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,12 @@
 
 #include <string>
 
+/**
+ * @file Replies.hpp
+ * @brief Defines standard IRC numeric reply codes and messages according to RFC 2812.
+ * Serves as a single source of truth for protocol-specific static strings.
+ */
+ 
 #define ERR_NEEDMOREPARAMS_CODE "461"
 #define ERR_NEEDMOREPARAMS_MSG "Not enough parameters"
 
