@@ -22,6 +22,14 @@ public:
     
     void setTopic(const std::string& topic);
 
+    bool isMember(Client* client) const;
+    void addMember(Client* client);
+    bool isOperator(Client* client) const;
+    void addOperator(Client* client);
+
+    const std::vector<Client*>& getMembers() const;
+    const std::vector<Client*>& getOperators() const;
+
 };
 
 #endif
