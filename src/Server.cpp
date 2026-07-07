@@ -6,14 +6,14 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/01 12:56:39 by alde-alm          #+#    #+#             */
-/*   Updated: 2026/07/07 07:33:54 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/07 11:02:19 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
 Server::Server(int port, const std::string &password)
-	: _port(port), _password(password), _serverFd(-1)
+	: _port(port), _password(password), _serverFd(-1), _name(SERVER_NAME)
 {
 	initSocket();
 }
@@ -205,4 +205,8 @@ Channel* Server::getChannel(const std::string& name) {
 
 void Server::addChannel(const std::string& name, Channel* channel) {
     _channels[name] = channel;
+}
+
+const std::string& Server::getName() const {
+    return this->_name;
 }

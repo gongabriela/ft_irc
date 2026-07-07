@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/03 14:19:34 by ggoncalv          #+#    #+#             */
-/*   Updated: 2026/07/07 07:23:03 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/07 11:31:04 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@
  */
 CommandHandler::CommandHandler(Server& server) : _server(server) {
     _commands["PASS"] = new PassCommand(server);
-    _commands["USER"] = new UserCommand();
+    _commands["USER"] = new UserCommand(server);
     _commands["NICK"] = new NickCommand(server);
-    _commands["JOIN"] = new JoinCommand(_server);
+    _commands["JOIN"] = new JoinCommand(server);
 }
 
 /**

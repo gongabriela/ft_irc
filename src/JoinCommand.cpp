@@ -8,7 +8,7 @@ JoinCommand::~JoinCommand() {}
 std::vector<std::string> JoinCommand::execute(Client& client, const ParsedCommand& cmd) {
     
     std::vector<std::string> responses;
-    std::string serverName = "localhost"; 
+    std::string serverName = _server.getName(); 
 
     if (cmd.args.empty()) {
         responses.push_back(":" + serverName + " " + ERR_NEEDMOREPARAMS_CODE + " " + client.getNickname() + " JOIN :" + ERR_NEEDMOREPARAMS_MSG);
@@ -47,9 +47,13 @@ Channel* JoinCommand::getOrCreateChannel(const std::string& channelName, Client&
 }
 
 void JoinCommand::formatJoinResponses(Client& client, Channel* channel, const std::string& channelName, std::vector<std::string>& responses) const {
-    std::string serverName = "localhost";
+    
+    std::string serverName = _server.getName();
     std::string clientNick = client.getNickname();
-    std::string userMask = clientNick + "!user@" + serverName;
+    std::string clientUser = client.getUsername();
+    std::string clientHost = "127.0.0.1";   // TODO: implement get getHostname() for ip address
+
+    std::string userMask = clientNick + "!" + clientUser + "@" + clientHost;
 
     responses.push_back(":" + userMask + " JOIN :" + channelName);
 
