@@ -8,16 +8,15 @@ JoinCommand::~JoinCommand() {}
 std::vector<std::string> JoinCommand::execute(Client& client, const ParsedCommand& cmd) {
     
     std::vector<std::string> responses;
-    std::string serverName = _server.getName(); 
 
     if (cmd.args.empty()) {
-        responses.push_back(":" + serverName + " " + ERR_NEEDMOREPARAMS_CODE + " " + client.getNickname() + " JOIN :" + ERR_NEEDMOREPARAMS_MSG);
+        responses.push_back(_server.buildReply(ERR_NEEDMOREPARAMS_CODE, client.getNickname(), "JOIN", ERR_NEEDMOREPARAMS_MSG));
         return responses;
     }
 
     std::string channelName = cmd.args[0];
     if (!isValidChannelName(channelName)) {
-        responses.push_back(":" + serverName + " " + ERR_NOSUCHCHANNEL_CODE + " " + client.getNickname() + " " + channelName + " :" + ERR_NOSUCHCHANNEL_MSG);
+        responses.push_back(_server.buildReply(ERR_NOSUCHCHANNEL_CODE, client.getNickname(), channelName, ERR_NOSUCHCHANNEL_MSG));
         return responses;
     }
     Channel* channel = getOrCreateChannel(channelName, client);
@@ -48,29 +47,21 @@ Channel* JoinCommand::getOrCreateChannel(const std::string& channelName, Client&
 
 void JoinCommand::formatJoinResponses(Client& client, Channel* channel, const std::string& channelName, std::vector<std::string>& responses) const {
     
-    std::string serverName = _server.getName();
     std::string clientNick = client.getNickname();
-    std::string clientUser = client.getUsername();
-    std::string clientHost = "127.0.0.1";   // TODO: implement get getHostname() for ip address
+    responses.push_back(":" + client.getPrefix() + " JOIN :" + channelName);
 
-    std::string userMask = clientNick + "!" + clientUser + "@" + clientHost;
-
-    responses.push_back(":" + userMask + " JOIN :" + channelName);
-
-    std::string namReply = ":" + serverName + " " + RPL_NAMREPLY_CODE + " " + clientNick + " = " + channelName + " :";
-    
+    std::string membersList = "";
     const std::vector<Client*>& members = channel->getMembers();
     for (size_t i = 0; i < members.size(); ++i) {
         if (channel->isOperator(members[i])) {
-            namReply += "@";
+            membersList += "@";
         }
-        namReply += members[i]->getNickname();
-        
+        membersList += members[i]->getNickname();
         if (i < members.size() - 1) {
-            namReply += " ";
+            membersList += " ";
         }
     }
-    responses.push_back(namReply);
 
-    responses.push_back(":" + serverName + " " + RPL_ENDOFNAMES_CODE + " " + clientNick + " " + channelName + " :" + RPL_ENDOFNAMES_MSG);
+    responses.push_back(_server.buildReply(RPL_NAMREPLY_CODE, clientNick, "= " + channelName, membersList));
+    responses.push_back(_server.buildReply(RPL_ENDOFNAMES_CODE, clientNick, channelName, RPL_ENDOFNAMES_MSG));
 }
