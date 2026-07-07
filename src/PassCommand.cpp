@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/03 14:42:42 by ggoncalv          #+#    #+#             */
-/*   Updated: 2026/07/03 16:52:29 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/07 15:30:38 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,12 @@ std::vector<std::string> PassCommand::execute(Client& client, const ParsedComman
     std::vector<std::string> replies;
 
     if (client.isAuthenticated()) {
-        replies.push_back(":server " ERR_ALREADYREGISTRED_CODE " * :" ERR_ALREADYREGISTRED_MSG);
+        replies.push_back(_server.buildReply(ERR_ALREADYREGISTRED_CODE, "*", ERR_ALREADYREGISTRED_MSG));
         return replies;
     }
 
     if (cmd.args.empty()) {
-        replies.push_back(":server " ERR_NEEDMOREPARAMS_CODE " PASS :" ERR_NEEDMOREPARAMS_MSG);
+        replies.push_back(_server.buildReply(ERR_NEEDMOREPARAMS_CODE, "PASS", ERR_NEEDMOREPARAMS_MSG));
         return replies;
     }
 
@@ -54,7 +54,7 @@ std::vector<std::string> PassCommand::execute(Client& client, const ParsedComman
         client.setHasPassword(true);
         std::cout << "[PassCommand] Client FD " << client.getFd() << " provided the correct password." << std::endl;
     } else {
-        replies.push_back(":server " ERR_PASSWDMISMATCH_CODE " * :" ERR_PASSWDMISMATCH_MSG);
+        replies.push_back(_server.buildReply(ERR_PASSWDMISMATCH_CODE, "*", ERR_PASSWDMISMATCH_MSG));
         std::cout << "[PassCommand] Client FD " << client.getFd() << " provided an incorrect password." << std::endl;
     }
 

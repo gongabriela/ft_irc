@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/03 14:19:34 by ggoncalv          #+#    #+#             */
-/*   Updated: 2026/07/07 07:23:03 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/07 15:31:17 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@
  */
 CommandHandler::CommandHandler(Server& server) : _server(server) {
     _commands["PASS"] = new PassCommand(server);
-    _commands["USER"] = new UserCommand();
+    _commands["USER"] = new UserCommand(server);
     _commands["NICK"] = new NickCommand(server);
-    _commands["JOIN"] = new JoinCommand(_server);
+    _commands["JOIN"] = new JoinCommand(server);
 }
 
 /**
@@ -59,7 +59,7 @@ std::vector<std::string> CommandHandler::execute(Client& client, const ParsedCom
     if (it != _commands.end()) {
         replies = it->second->execute(client, cmd);
     } else {
-        replies.push_back(":server " ERR_UNKNOWNCOMMAND_CODE " " + cmd.command + " :" ERR_UNKNOWNCOMMAND_MSG);
+        replies.push_back(_server.buildReply(ERR_UNKNOWNCOMMAND_CODE, cmd.command, ERR_UNKNOWNCOMMAND_MSG));
         std::cout << "[CommandHandler] Unknown command received: " << cmd.command << std::endl;
     }
 

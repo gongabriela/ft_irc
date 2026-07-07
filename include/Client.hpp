@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/01 12:57:24 by alde-alm          #+#    #+#             */
-/*   Updated: 2026/07/03 11:40:04 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/07 16:54:58 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 
 #include "Irc.hpp"
 
+/**
+ * @brief Represents a connected network client in the IRC server.
+ * Manages the client's socket file descriptor, I/O buffers, and authentication state.
+ */
 class Client
 {
 private:
@@ -59,6 +63,8 @@ public:
 
     const std::string& getRealname() const;
     void setRealname(const std::string& realname);
+
+	std::string getPrefix() const;
 };
 
 #endif

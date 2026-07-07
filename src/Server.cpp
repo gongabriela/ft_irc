@@ -6,14 +6,14 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/01 12:56:39 by alde-alm          #+#    #+#             */
-/*   Updated: 2026/07/07 07:33:54 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/07 17:24:25 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
 Server::Server(int port, const std::string &password)
-	: _port(port), _password(password), _serverFd(-1)
+	: _port(port), _password(password), _serverFd(-1), _name(SERVER_NAME)
 {
 	initSocket();
 }
@@ -185,6 +185,11 @@ const std::string& Server::getPassword() const {
     return _password;
 }
 
+/**
+ * @brief Checks if a specific nickname is currently in use by any connected client.
+ * @param nickname The nickname to search for.
+ * @return true if the nickname is found, false otherwise.
+ */
 bool Server::isNicknameInUse(const std::string& nickname) const {
     std::map<int, Client*>::const_iterator it;
     for (it = _clients.begin(); it != _clients.end(); ++it) {
@@ -205,4 +210,33 @@ Channel* Server::getChannel(const std::string& name) {
 
 void Server::addChannel(const std::string& name, Channel* channel) {
     _channels[name] = channel;
+}
+
+const std::string& Server::getName() const {
+    return this->_name;
+}
+
+/**
+ * @brief Generates a standard RFC 2812 formatted numeric reply.
+ * Format: :<server_name> <code> <target> :<message>
+ * @param code The 3-digit numeric code (e.g., "403").
+ * @param target The recipient's nickname (or "*" if not yet registered).
+ * @param msg The human-readable string message.
+ * @return The formatted string ready to be queued for the client.
+ */
+std::string Server::buildReply(const std::string& code, const std::string& target, const std::string& msg) const {
+    return ":" + _name + " " + code + " " + target + " :" + msg;
+}
+
+/**
+ * @brief Generates a complex RFC 2812 formatted numeric reply requiring intermediate arguments.
+ * Format: :<server_name> <code> <target> <extraInfo> :<message>
+ * @param code The 3-digit numeric code.
+ * @param target The recipient's nickname.
+ * @param extraInfo Additional data inserted before the final message (e.g., channel name).
+ * @param msg The final human-readable string message.
+ * @return The formatted string.
+ */
+std::string Server::buildReply(const std::string& code, const std::string& target, const std::string& extraInfo, const std::string& msg) const {
+    return ":" + _name + " " + code + " " + target + " " + extraInfo + " :" + msg;
 }

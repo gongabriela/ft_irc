@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/01 12:58:07 by alde-alm          #+#    #+#             */
-/*   Updated: 2026/07/03 11:44:02 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/07 16:55:52 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,4 +96,17 @@ const std::string& Client::getRealname() const {
 
 void Client::setRealname(const std::string& realname) {
     _realname = realname;
+}
+
+/**
+ * @brief Generates the client's IRC prefix (mask).
+ * Format: nickname!username@hostname
+ * @return The formatted prefix string.
+ */
+std::string Client::getPrefix() const {
+    std::string host = "127.0.0.1"; // TODO: extract real IP in future implementations
+    
+    std::string user = _username.empty() ? "user" : _username;
+    
+    return _nickname + "!" + user + "@" + host;
 }

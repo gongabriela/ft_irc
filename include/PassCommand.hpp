@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/03 14:42:00 by ggoncalv          #+#    #+#             */
-/*   Updated: 2026/07/03 14:42:24 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/07 17:01:37 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,10 @@
 
 class Server;
 
+/**
+ * @brief Handles the IRC PASS command.
+ * Authenticates the client connection by validating the provided server password.
+ */
 class PassCommand : public ICommand {
 private:
     Server& _server;

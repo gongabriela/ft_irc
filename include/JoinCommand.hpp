@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/07 07:21:18 by ggoncalv          #+#    #+#             */
-/*   Updated: 2026/07/07 07:51:28 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/07 16:56:58 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,10 @@
 #include "ICommand.hpp"
 #include "Server.hpp"
 
+/**
+ * @brief Handles the IRC JOIN command.
+ * Allows a client to start listening to a specific channel, creating it if it does not exist.
+ */
 class JoinCommand : public ICommand {
     private:
         Server& _server;

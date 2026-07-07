@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   JoinCommand.cpp                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/07/07 16:59:47 by ggoncalv          #+#    #+#             */
+/*   Updated: 2026/07/07 16:59:48 by ggoncalv         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "JoinCommand.hpp"
 #include "Replies.hpp"
 
@@ -5,19 +17,25 @@ JoinCommand::JoinCommand(Server& server) : _server(server) {}
 
 JoinCommand::~JoinCommand() {}
 
+/**
+ * @brief Executes the JOIN command.
+ * Validates the channel name, assigns the client to the channel, and formats the appropriate success or error replies.
+ * @param client The client requesting to join.
+ * @param cmd The parsed command data containing the target channel.
+ * @return A vector of formatted IRC replies to be sent back to the client.
+ */
 std::vector<std::string> JoinCommand::execute(Client& client, const ParsedCommand& cmd) {
     
     std::vector<std::string> responses;
-    std::string serverName = "localhost"; 
 
     if (cmd.args.empty()) {
-        responses.push_back(":" + serverName + " " + ERR_NEEDMOREPARAMS_CODE + " " + client.getNickname() + " JOIN :" + ERR_NEEDMOREPARAMS_MSG);
+        responses.push_back(_server.buildReply(ERR_NEEDMOREPARAMS_CODE, client.getNickname(), "JOIN", ERR_NEEDMOREPARAMS_MSG));
         return responses;
     }
 
     std::string channelName = cmd.args[0];
     if (!isValidChannelName(channelName)) {
-        responses.push_back(":" + serverName + " " + ERR_NOSUCHCHANNEL_CODE + " " + client.getNickname() + " " + channelName + " :" + ERR_NOSUCHCHANNEL_MSG);
+        responses.push_back(_server.buildReply(ERR_NOSUCHCHANNEL_CODE, client.getNickname(), channelName, ERR_NOSUCHCHANNEL_MSG));
         return responses;
     }
     Channel* channel = getOrCreateChannel(channelName, client);
@@ -26,10 +44,22 @@ std::vector<std::string> JoinCommand::execute(Client& client, const ParsedComman
     return responses;
 }
 
+/**
+ * @brief Validates if the provided channel name strictly follows the IRC protocol prefix rules.
+ * @param name The channel name to evaluate.
+ * @return true if valid (starts with '#' or '&'), false otherwise.
+ */
 bool JoinCommand::isValidChannelName(const std::string& name) const {
     return (!name.empty() && (name[0] == '#' || name[0] == '&'));
 }
 
+/**
+ * @brief Retrieves an existing channel or creates a new one in the server.
+ * If created, the initiating client is automatically granted operator privileges.
+ * @param channelName The name of the channel.
+ * @param client The client joining the channel.
+ * @return A pointer to the requested Channel instance.
+ */
 Channel* JoinCommand::getOrCreateChannel(const std::string& channelName, Client& client) {
     
     Channel* channel = _server.getChannel(channelName);
@@ -46,27 +76,31 @@ Channel* JoinCommand::getOrCreateChannel(const std::string& channelName, Client&
     return channel;
 }
 
+/**
+ * @brief Constructs the sequence of success replies required by RFC 2812 upon joining a channel.
+ * This includes the JOIN confirmation mask, the RPL_NAMREPLY (353), and RPL_ENDOFNAMES (366).
+ * @param client The client joining.
+ * @param channel The channel joined.
+ * @param channelName The exact string name of the channel.
+ * @param responses The vector where formatted replies will be appended.
+ */
 void JoinCommand::formatJoinResponses(Client& client, Channel* channel, const std::string& channelName, std::vector<std::string>& responses) const {
-    std::string serverName = "localhost";
-    std::string clientNick = client.getNickname();
-    std::string userMask = clientNick + "!user@" + serverName;
-
-    responses.push_back(":" + userMask + " JOIN :" + channelName);
-
-    std::string namReply = ":" + serverName + " " + RPL_NAMREPLY_CODE + " " + clientNick + " = " + channelName + " :";
     
+    std::string clientNick = client.getNickname();
+    responses.push_back(":" + client.getPrefix() + " JOIN :" + channelName);
+
+    std::string membersList = "";
     const std::vector<Client*>& members = channel->getMembers();
     for (size_t i = 0; i < members.size(); ++i) {
         if (channel->isOperator(members[i])) {
-            namReply += "@";
+            membersList += "@";
         }
-        namReply += members[i]->getNickname();
-        
+        membersList += members[i]->getNickname();
         if (i < members.size() - 1) {
-            namReply += " ";
+            membersList += " ";
         }
     }
-    responses.push_back(namReply);
 
-    responses.push_back(":" + serverName + " " + RPL_ENDOFNAMES_CODE + " " + clientNick + " " + channelName + " :" + RPL_ENDOFNAMES_MSG);
+    responses.push_back(_server.buildReply(RPL_NAMREPLY_CODE, clientNick, "= " + channelName, membersList));
+    responses.push_back(_server.buildReply(RPL_ENDOFNAMES_CODE, clientNick, channelName, RPL_ENDOFNAMES_MSG));
 }

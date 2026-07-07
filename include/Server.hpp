@@ -6,47 +6,55 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/01 12:57:59 by alde-alm          #+#    #+#             */
-/*   Updated: 2026/07/07 07:33:41 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/07 14:45:15 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SERVER_HPP
-#define SERVER_HPP
+# define SERVER_HPP
 
-#include "Irc.hpp"
-#include "Poller.hpp"
-#include "Client.hpp"
-#include "Parser.hpp"
-#include "CommandHandler.hpp"
-#include "Channel.hpp"
+# include "Irc.hpp"
+# include "Poller.hpp"
+# include "Client.hpp"
+# include "Parser.hpp"
+# include "CommandHandler.hpp"
+# include "Channel.hpp"
+
+# define SERVER_NAME "irc.42porto.com"
 
 class Server
 {
-private:
-	int _port;
-	std::string _password;
-	int _serverFd;
+	private:
+		int _port;
+		std::string _password;
+		int _serverFd;
+		std::string _name;
+		
+		Poller poller;					  // Integrated Poller - manages all FDs
+		std::map<int, Client *> _clients; // map of fd to Client pointer
+		std::map<std::string, Channel*> _channels;
+		
+		void initSocket();												 // Create, configure and put the socket (FD) into listen
+		void acceptNewClient();											 // Accept new connections
+		void handleRead(int fd, Parser &parser, CommandHandler &handle); // Handle reading data
+		void handleWrite(int fd);										 // Handle sending data
+		void disconnectClient(int fd);									 // Remove clients, close FD and clean up
+		
+	public:
+		Server(int port, const std::string &password);
+		~Server();
 
-	Poller poller;					  // Integrated Poller - manages all FDs
-	std::map<int, Client *> _clients; // map of fd to Client pointer
-	std::map<std::string, Channel*> _channels;
-	
-	void initSocket();												 // Create, configure and put the socket (FD) into listen
-	void acceptNewClient();											 // Accept new connections
-	void handleRead(int fd, Parser &parser, CommandHandler &handle); // Handle reading data
-	void handleWrite(int fd);										 // Handle sending data
-	void disconnectClient(int fd);									 // Remove clients, close FD and clean up
-	
-public:
-	Server(int port, const std::string &password);
-	~Server();
+		void runIrc();
 
-	void runIrc();
+		const std::string& getPassword() const;
+		bool isNicknameInUse(const std::string& nickname) const;
+		Channel* getChannel(const std::string& name);
+		void addChannel(const std::string& name, Channel* channel);
+		const std::string& getName() const;
 
-	const std::string& getPassword() const;
-	bool isNicknameInUse(const std::string& nickname) const;
-	Channel* getChannel(const std::string& name);
-    void addChannel(const std::string& name, Channel* channel);
+		// ==== Reply Builders ====
+		std::string buildReply(const std::string& code, const std::string& target, const std::string& msg) const;
+		std::string buildReply(const std::string& code, const std::string& target, const std::string& extraInfo, const std::string& msg) const;
 };
 
 #endif
