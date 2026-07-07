@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/07 07:21:18 by ggoncalv          #+#    #+#             */
-/*   Updated: 2026/07/07 07:21:46 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/07 07:51:28 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,18 @@
 #include "Server.hpp"
 
 class JoinCommand : public ICommand {
-private:
-    Server& _server;
+    private:
+        Server& _server;
 
-public:
-    JoinCommand(Server& server);
-    ~JoinCommand();
+        bool isValidChannelName(const std::string& name) const;
+        Channel* getOrCreateChannel(const std::string& channelName, Client& client);
+        void formatJoinResponses(Client& client, Channel* channel, const std::string& channelName, std::vector<std::string>& responses) const;
 
-    std::vector<std::string> execute(Client& client, const ParsedCommand& cmd);
+    public:
+        JoinCommand(Server& server);
+        ~JoinCommand();
+
+        std::vector<std::string> execute(Client& client, const ParsedCommand& cmd);
 };
 
 #endif
