@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   JoinCommand.cpp                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/07/07 16:59:47 by ggoncalv          #+#    #+#             */
+/*   Updated: 2026/07/07 16:59:48 by ggoncalv         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "JoinCommand.hpp"
 #include "Replies.hpp"
 
@@ -5,6 +17,13 @@ JoinCommand::JoinCommand(Server& server) : _server(server) {}
 
 JoinCommand::~JoinCommand() {}
 
+/**
+ * @brief Executes the JOIN command.
+ * Validates the channel name, assigns the client to the channel, and formats the appropriate success or error replies.
+ * @param client The client requesting to join.
+ * @param cmd The parsed command data containing the target channel.
+ * @return A vector of formatted IRC replies to be sent back to the client.
+ */
 std::vector<std::string> JoinCommand::execute(Client& client, const ParsedCommand& cmd) {
     
     std::vector<std::string> responses;
@@ -25,10 +44,22 @@ std::vector<std::string> JoinCommand::execute(Client& client, const ParsedComman
     return responses;
 }
 
+/**
+ * @brief Validates if the provided channel name strictly follows the IRC protocol prefix rules.
+ * @param name The channel name to evaluate.
+ * @return true if valid (starts with '#' or '&'), false otherwise.
+ */
 bool JoinCommand::isValidChannelName(const std::string& name) const {
     return (!name.empty() && (name[0] == '#' || name[0] == '&'));
 }
 
+/**
+ * @brief Retrieves an existing channel or creates a new one in the server.
+ * If created, the initiating client is automatically granted operator privileges.
+ * @param channelName The name of the channel.
+ * @param client The client joining the channel.
+ * @return A pointer to the requested Channel instance.
+ */
 Channel* JoinCommand::getOrCreateChannel(const std::string& channelName, Client& client) {
     
     Channel* channel = _server.getChannel(channelName);
@@ -45,6 +76,14 @@ Channel* JoinCommand::getOrCreateChannel(const std::string& channelName, Client&
     return channel;
 }
 
+/**
+ * @brief Constructs the sequence of success replies required by RFC 2812 upon joining a channel.
+ * This includes the JOIN confirmation mask, the RPL_NAMREPLY (353), and RPL_ENDOFNAMES (366).
+ * @param client The client joining.
+ * @param channel The channel joined.
+ * @param channelName The exact string name of the channel.
+ * @param responses The vector where formatted replies will be appended.
+ */
 void JoinCommand::formatJoinResponses(Client& client, Channel* channel, const std::string& channelName, std::vector<std::string>& responses) const {
     
     std::string clientNick = client.getNickname();
