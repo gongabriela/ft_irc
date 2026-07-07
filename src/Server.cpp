@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/01 12:56:39 by alde-alm          #+#    #+#             */
-/*   Updated: 2026/07/07 11:02:19 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/07 14:45:27 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,4 +209,12 @@ void Server::addChannel(const std::string& name, Channel* channel) {
 
 const std::string& Server::getName() const {
     return this->_name;
+}
+
+std::string Server::buildReply(const std::string& code, const std::string& target, const std::string& msg) const {
+    return ":" + _name + " " + code + " " + target + " :" + msg;
+}
+
+std::string Server::buildReply(const std::string& code, const std::string& target, const std::string& extraInfo, const std::string& msg) const {
+    return ":" + _name + " " + code + " " + target + " " + extraInfo + " :" + msg;
 }
