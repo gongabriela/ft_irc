@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Channel.cpp                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/07/07 17:40:19 by ggoncalv          #+#    #+#             */
+/*   Updated: 2026/07/10 21:06:43 by ggoncalv         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "Channel.hpp"
 #include <algorithm>
 
@@ -81,4 +93,17 @@ const std::vector<Client*>& Channel::getMembers() const {
  */
 const std::vector<Client*>& Channel::getOperators() const {
     return _operators;
+}
+
+/**
+ * @brief Broadcasts a message to all members of the channel, except the sender.
+ * @param message The fully formatted IRC message string.
+ * @param sender Pointer to the client who originated the message.
+ */
+void Channel::broadcast(const std::string& message, Client* sender) {
+    for (size_t i = 0; i < _members.size(); ++i) {
+        if (_members[i] != sender) {
+            _members[i]->queueMessage(message);
+        }
+    }
 }

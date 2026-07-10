@@ -6,12 +6,13 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/07 16:59:47 by ggoncalv          #+#    #+#             */
-/*   Updated: 2026/07/07 16:59:48 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/10 20:54:58 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "JoinCommand.hpp"
-#include "Replies.hpp"
+#include "../include/JoinCommand.hpp"
+#include "../include/Replies.hpp"
+#include "../include/Channel.hpp"
 
 JoinCommand::JoinCommand(Server& server) : _server(server) {}
 
@@ -41,6 +42,8 @@ std::vector<std::string> JoinCommand::execute(Client& client, const ParsedComman
     Channel* channel = getOrCreateChannel(channelName, client);
 
     formatJoinResponses(client, channel, channelName, responses);
+    std::string joinNotification = ":" + client.getPrefix() + " JOIN :" + channelName;
+    channel->broadcast(joinNotification, &client);
     return responses;
 }
 
