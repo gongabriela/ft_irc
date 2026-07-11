@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/03 14:19:34 by ggoncalv          #+#    #+#             */
-/*   Updated: 2026/07/10 21:12:54 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/11 12:40:37 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include "../include/UserCommand.hpp"
 #include "../include/NickCommand.hpp"
 #include "../include/JoinCommand.hpp"
+#include "../include/PrivmsgCommand.hpp"
 #include <iostream>
 
 /**
@@ -28,6 +29,7 @@ CommandHandler::CommandHandler(Server& server) : _server(server) {
     _commands["USER"] = new UserCommand(server);
     _commands["NICK"] = new NickCommand(server);
     _commands["JOIN"] = new JoinCommand(server);
+    _commands["PRIVMSG"] = new PrivmsgCommand(server);
 }
 
 /**
