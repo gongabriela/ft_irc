@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/01 12:57:59 by alde-alm          #+#    #+#             */
-/*   Updated: 2026/07/11 12:28:40 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/11 15:20:26 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,9 @@ class Server
 
 		// === for PRIVMSG cmd === 
 		Client* getClientByNickname(const std::string& nickname);
+
+		//=== for part & quit ===
+		void removeChannel(const std::string& name);
 };
 
 #endif

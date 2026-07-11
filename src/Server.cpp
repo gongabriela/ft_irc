@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/01 12:56:39 by alde-alm          #+#    #+#             */
-/*   Updated: 2026/07/11 12:47:39 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/11 15:23:22 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -267,4 +267,16 @@ Client* Server::getClientByNickname(const std::string& nickname) {
         }
     }
     return NULL;
+}
+
+/**
+ * @brief Safely deletes a channel from heap memory and removes it from the server's tracking map.
+ * @param name The exact name of the channel to remove.
+ */
+void Server::removeChannel(const std::string& name) {
+    std::map<std::string, Channel*>::iterator it = _channels.find(name);
+    if (it != _channels.end()) {
+        delete it->second; // Prevents memory leaks
+        _channels.erase(it);
+    }
 }
