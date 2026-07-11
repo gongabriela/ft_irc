@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/07 17:40:19 by ggoncalv          #+#    #+#             */
-/*   Updated: 2026/07/10 21:06:43 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/11 15:21:46 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,4 +106,35 @@ void Channel::broadcast(const std::string& message, Client* sender) {
             _members[i]->queueMessage(message);
         }
     }
+}
+
+/**
+ * @brief Removes a client from the channel's member list.
+ * @param client Pointer to the client to be removed.
+ */
+void Channel::removeMember(Client* client) {
+    std::vector<Client*>::iterator it = std::find(_members.begin(), _members.end(), client);
+    if (it != _members.end()) {
+        _members.erase(it);
+    }
+}
+
+/**
+ * @brief Removes a client from the channel's operator list.
+ * @param client Pointer to the client to be removed from operators.
+ */
+void Channel::removeOperator(Client* client) {
+    std::vector<Client*>::iterator it = std::find(_operators.begin(), _operators.end(), client);
+    if (it != _operators.end()) {
+        _operators.erase(it);
+    }
+}
+
+/**
+ * @brief Checks if the channel has no members left.
+ * Useful for triggering channel destruction to prevent memory leaks.
+ * @return true if the channel is empty, false otherwise.
+ */
+bool Channel::isEmpty() const {
+    return _members.empty();
 }
