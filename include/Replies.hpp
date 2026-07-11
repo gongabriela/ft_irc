@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/03 15:22:27 by ggoncalv          #+#    #+#             */
-/*   Updated: 2026/07/07 17:21:59 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/10 21:08:48 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,5 +56,8 @@
 
 #define RPL_ENDOFNAMES_CODE "366"
 #define RPL_ENDOFNAMES_MSG "End of /NAMES list"
+
+#define ERR_NOTREGISTERED_CODE "451"
+#define ERR_NOTREGISTERED_MSG "You have not registered"
 
 #endif

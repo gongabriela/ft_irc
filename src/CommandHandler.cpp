@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/03 14:19:34 by ggoncalv          #+#    #+#             */
-/*   Updated: 2026/07/07 15:31:17 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/10 21:12:54 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,12 @@ std::vector<std::string> CommandHandler::execute(Client& client, const ParsedCom
         return replies;
     }
 
+    if (!client.isAuthenticated() && cmd.command != "PASS" && cmd.command != "NICK" && cmd.command != "USER" && cmd.command != "QUIT") {
+        replies.push_back(_server.buildReply(ERR_NOTREGISTERED_CODE, client.getNickname().empty() ? "*" : client.getNickname(), ERR_NOTREGISTERED_MSG));
+        std::cout << "[Security] Blocked unauthenticated command: " << cmd.command << " from FD " << client.getFd() << std::endl;
+        return replies;
+    }
+    
     std::map<std::string, ICommand*>::iterator it = _commands.find(cmd.command);
     
     if (it != _commands.end()) {
