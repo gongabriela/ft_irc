@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/03 14:19:34 by ggoncalv          #+#    #+#             */
-/*   Updated: 2026/07/11 15:44:14 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/11 15:44:48 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 #include "../include/NickCommand.hpp"
 #include "../include/JoinCommand.hpp"
 #include "../include/PrivmsgCommand.hpp"
+#include "../include/QuitCommand.hpp"
+#include "../include/PartCommand.hpp"
 #include <iostream>
 
 /**
