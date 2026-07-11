@@ -6,7 +6,7 @@
 #    By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/07/06 11:14:47 by ggoncalv          #+#    #+#              #
-#    Updated: 2026/07/11 12:34:58 by ggoncalv         ###   ########.fr        #
+#    Updated: 2026/07/11 15:39:00 by ggoncalv         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ GDB := gdb -q --tui
 SRCS := src/main.cpp src/Server.cpp src/Poller.cpp src/Client.cpp src/Parser.cpp\
  		src/CommandHandler.cpp src/PassCommand.cpp src/UserCommand.cpp\
 		src/NickCommand.cpp src/Channel.cpp src/JoinCommand.cpp\
-		src/PrivmsgCommand.cpp
+		src/PrivmsgCommand.cpp src/PartCommand.cpp src/QuitCommand.cpp
 
 OBJS := $(SRCS:.cpp=.o)
 
