@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/03 15:22:27 by ggoncalv          #+#    #+#             */
-/*   Updated: 2026/07/07 17:21:59 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/11 12:27:53 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,5 +56,22 @@
 
 #define RPL_ENDOFNAMES_CODE "366"
 #define RPL_ENDOFNAMES_MSG "End of /NAMES list"
+
+// === unauth error ===
+#define ERR_NOTREGISTERED_CODE "451"
+#define ERR_NOTREGISTERED_MSG "You have not registered"
+
+// === PRIVMSG ====
+#define ERR_NOSUCHNICK_CODE "401"
+#define ERR_NOSUCHNICK_MSG "No such nick/channel"
+
+#define ERR_CANNOTSENDTOCHAN_CODE "404"
+#define ERR_CANNOTSENDTOCHAN_MSG "Cannot send to channel"
+
+#define ERR_NORECIPIENT_CODE "411"
+#define ERR_NORECIPIENT_MSG "No recipient given (PRIVMSG)"
+
+#define ERR_NOTEXTTOSEND_CODE "412"
+#define ERR_NOTEXTTOSEND_MSG "No text to send"
 
 #endif

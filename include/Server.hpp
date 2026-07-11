@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/01 12:57:59 by alde-alm          #+#    #+#             */
-/*   Updated: 2026/07/07 14:45:15 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/11 12:28:40 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,9 @@ class Server
 		// ==== Reply Builders ====
 		std::string buildReply(const std::string& code, const std::string& target, const std::string& msg) const;
 		std::string buildReply(const std::string& code, const std::string& target, const std::string& extraInfo, const std::string& msg) const;
+
+		// === for PRIVMSG cmd === 
+		Client* getClientByNickname(const std::string& nickname);
 };
 
 #endif
