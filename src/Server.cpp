@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/01 12:56:39 by alde-alm          #+#    #+#             */
-/*   Updated: 2026/07/07 17:24:25 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/11 12:47:39 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,9 +141,22 @@ void Server::handleRead(int fd, Parser &parser, CommandHandler &handler)
 		// Returnes a complete formatted response.
 		//=======================================
 
-		for (size_t i = 0; i < replies.size(); ++i)
+		/*for (size_t i = 0; i < replies.size(); ++i)
 			client->queueMessage(replies[i]);
-		poller.enable(fd, POLLOUT);
+		poller.enable(fd, POLLOUT);*/
+		
+		// 1. Guarda as respostas no buffer de quem enviou o comando
+		for (size_t i = 0; i < replies.size(); ++i) {
+			client->queueMessage(replies[i]);
+		}
+		
+		// 2. NOVO: Varre TODOS os clientes e ativa o POLLOUT se tiverem algo para receber
+		std::map<int, Client*>::iterator it;
+		for (it = _clients.begin(); it != _clients.end(); ++it) {
+			if (it->second->hasDataToSend()) {
+				poller.enable(it->first, POLLOUT);
+			}
+		}
 	}
 }
 
@@ -239,4 +252,19 @@ std::string Server::buildReply(const std::string& code, const std::string& targe
  */
 std::string Server::buildReply(const std::string& code, const std::string& target, const std::string& extraInfo, const std::string& msg) const {
     return ":" + _name + " " + code + " " + target + " " + extraInfo + " :" + msg;
+}
+
+/**
+ * @brief Retrieves a connected client by their nickname.
+ * @param nickname The exact nickname to search for.
+ * @return Pointer to the Client, or NULL if not found.
+ */
+Client* Server::getClientByNickname(const std::string& nickname) {
+    std::map<int, Client*>::iterator it;
+    for (it = _clients.begin(); it != _clients.end(); ++it) {
+        if (it->second->getNickname() == nickname) {
+            return it->second;
+        }
+    }
+    return NULL;
 }
