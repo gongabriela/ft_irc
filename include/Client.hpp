@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/01 12:57:24 by alde-alm          #+#    #+#             */
-/*   Updated: 2026/07/07 16:54:58 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/11 15:16:46 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ private:
 	std::string _nickname;
     std::string _username;
     std::string _realname;
+
+	bool _isPendingDisconnect;
 
 public:
 	Client(int fd);
@@ -65,6 +67,9 @@ public:
     void setRealname(const std::string& realname);
 
 	std::string getPrefix() const;
+
+	bool isPendingDisconnect() const;
+	void setPendingDisconnect(bool status);
 };
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/07 16:04:31 by ggoncalv          #+#    #+#             */
-/*   Updated: 2026/07/10 20:49:46 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/11 15:16:10 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,10 @@ class Channel {
         const std::vector<Client*>& getOperators() const;
 
         void broadcast(const std::string& message, Client* sender);
+
+        void removeMember(Client* client);
+        void removeOperator(Client* client);
+        bool isEmpty() const;
     };
 
 #endif

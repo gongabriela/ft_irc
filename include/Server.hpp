@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/01 12:57:59 by alde-alm          #+#    #+#             */
-/*   Updated: 2026/07/11 12:28:40 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/11 15:33:47 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ class Server
 		void acceptNewClient();											 // Accept new connections
 		void handleRead(int fd, Parser &parser, CommandHandler &handle); // Handle reading data
 		void handleWrite(int fd);										 // Handle sending data
-		void disconnectClient(int fd);									 // Remove clients, close FD and clean up
+		void disconnectClient(int fd);
+		void removeClientFromAllChannels(Client* client);									 // Remove clients, close FD and clean up
 		
 	public:
 		Server(int port, const std::string &password);
@@ -58,6 +59,10 @@ class Server
 
 		// === for PRIVMSG cmd === 
 		Client* getClientByNickname(const std::string& nickname);
-};
+
+		//=== for part & quit ===
+		void removeChannel(const std::string& name);
+
+};	
 
 #endif

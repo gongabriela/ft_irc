@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/01 12:56:39 by alde-alm          #+#    #+#             */
-/*   Updated: 2026/07/11 12:47:39 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/12 18:37:57 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,19 +179,56 @@ void Server::handleWrite(int fd)
 	out.erase(0, bytes);
 	if (out.empty())
 		poller.disable(fd, POLLOUT);
+	
+	// Verifica se o cliente pediu para sair (QUIT)
+    if (client->isPendingDisconnect()) {
+       	disconnectClient(fd);
+    }
 }
 
-void Server::disconnectClient(int fd)
-{
-	std::cout << BMAG "Disconnecting client fd=" << fd << NC << std::endl;
-	poller.remove(fd);
-	std::map<int, Client *>::iterator it = _clients.find(fd);
-	if (it != _clients.end())
-	{
-		delete it->second;
-		_clients.erase(it);
-	}
-	close(fd);
+/**
+ * @brief Helper method to handle the business logic of removing a client from all active channels.
+ * Broadcasts the QUIT message to peers and safely triggers garbage collection for empty channels.
+ * @param client Pointer to the client being disconnected.
+ */
+void Server::removeClientFromAllChannels(Client* client) {
+    std::map<std::string, Channel*>::iterator it = _channels.begin();
+    
+    while (it != _channels.end()) {
+        Channel* chan = it->second;
+        if (chan->isMember(client)) {
+            chan->broadcast(":" + client->getPrefix() + " QUIT :Client disconnected", NULL);
+            chan->removeMember(client);
+            chan->removeOperator(client);
+        }
+        
+        if (chan->isEmpty()) {
+            delete chan;
+            std::map<std::string, Channel*>::iterator toErase = it;
+            ++it;
+            _channels.erase(toErase);
+        } else {
+            ++it;
+        }
+    }
+}
+
+/**
+ * @brief disconnects a client by closing I/O streams and delegating domain cleanup.
+ * @param fd The file descriptor of the client to disconnect.
+ */
+void Server::disconnectClient(int fd) {
+    std::cout << BMAG "Disconnecting client fd=" << fd << NC << std::endl;
+    
+    std::map<int, Client*>::iterator it = _clients.find(fd);
+    if (it != _clients.end()) {
+        Client* client = it->second;
+        poller.remove(fd);
+        removeClientFromAllChannels(client);
+        delete client;
+        _clients.erase(it);
+    }
+    close(fd);
 }
 
 const std::string& Server::getPassword() const {
@@ -267,4 +304,16 @@ Client* Server::getClientByNickname(const std::string& nickname) {
         }
     }
     return NULL;
+}
+
+/**
+ * @brief Safely deletes a channel from heap memory and removes it from the server's tracking map.
+ * @param name The exact name of the channel to remove.
+ */
+void Server::removeChannel(const std::string& name) {
+    std::map<std::string, Channel*>::iterator it = _channels.find(name);
+    if (it != _channels.end()) {
+        delete it->second; // Prevents memory leaks
+        _channels.erase(it);
+    }
 }

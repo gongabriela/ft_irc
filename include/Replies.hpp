@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/03 15:22:27 by ggoncalv          #+#    #+#             */
-/*   Updated: 2026/07/11 12:27:53 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/11 15:15:41 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,9 @@
 
 #define ERR_NOTEXTTOSEND_CODE "412"
 #define ERR_NOTEXTTOSEND_MSG "No text to send"
+
+// === PART ====
+#define ERR_NOTONCHANNEL_CODE "442"
+#define ERR_NOTONCHANNEL_MSG "You're not on that channel"
 
 #endif

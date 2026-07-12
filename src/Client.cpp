@@ -6,13 +6,13 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/01 12:58:07 by alde-alm          #+#    #+#             */
-/*   Updated: 2026/07/07 16:55:52 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/11 15:21:53 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/Client.hpp"
 
-Client::Client(int fd) : _fd(fd), _isAuthenticated(false), _hasPassword(false) {}
+Client::Client(int fd) : _fd(fd), _isAuthenticated(false), _hasPassword(false), _isPendingDisconnect(false) {}
 
 Client::~Client() {}
 
@@ -109,4 +109,20 @@ std::string Client::getPrefix() const {
     std::string user = _username.empty() ? "user" : _username;
     
     return _nickname + "!" + user + "@" + host;
+}
+
+/**
+ * @brief Checks if the client has initiated a disconnection (e.g., via QUIT).
+ * @return true if a disconnect is pending, false otherwise.
+ */
+bool Client::isPendingDisconnect() const {
+    return _isPendingDisconnect;
+}
+
+/**
+ * @brief Flags the client for disconnection at the end of the current event loop cycle.
+ * @param status The disconnect status to set.
+ */
+void Client::setPendingDisconnect(bool status) {
+    _isPendingDisconnect = status;
 }
