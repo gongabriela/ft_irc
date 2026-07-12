@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/01 12:56:39 by alde-alm          #+#    #+#             */
-/*   Updated: 2026/07/11 15:54:28 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/12 18:37:57 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,11 +157,6 @@ void Server::handleRead(int fd, Parser &parser, CommandHandler &handler)
 				poller.enable(it->first, POLLOUT);
 			}
 		}
-
-		// Verifica se o cliente pediu para sair (QUIT)
-    	if (client->isPendingDisconnect()) {
-        	disconnectClient(fd);
-    	}
 	}
 }
 
@@ -184,6 +179,11 @@ void Server::handleWrite(int fd)
 	out.erase(0, bytes);
 	if (out.empty())
 		poller.disable(fd, POLLOUT);
+	
+	// Verifica se o cliente pediu para sair (QUIT)
+    if (client->isPendingDisconnect()) {
+       	disconnectClient(fd);
+    }
 }
 
 /**
