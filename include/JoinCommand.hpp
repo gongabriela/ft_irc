@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/07 07:21:18 by ggoncalv          #+#    #+#             */
-/*   Updated: 2026/07/07 16:56:58 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/15 15:17:35 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ class JoinCommand : public ICommand {
         Server& _server;
 
         bool isValidChannelName(const std::string& name) const;
-        Channel* getOrCreateChannel(const std::string& channelName, Client& client);
         void formatJoinResponses(Client& client, Channel* channel, const std::string& channelName, std::vector<std::string>& responses) const;
+        bool validateAccessModes(Client& client, Channel* channel, const std::string& providedKey, std::vector<std::string>& responses) const;
 
     public:
         JoinCommand(Server& server);

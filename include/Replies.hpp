@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/03 15:22:27 by ggoncalv          #+#    #+#             */
-/*   Updated: 2026/07/15 09:54:34 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/15 14:54:49 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,5 +89,16 @@
 #define ERR_USERNOTINCHANNEL_MSG "They aren't on that channel"
 #define ERR_CHANOPRIVSNEEDED_CODE "482"
 #define ERR_CHANOPRIVSNEEDED_MSG "You're not channel operator"
+
+// === MODE ===
+#define RPL_CHANNELMODEIS_CODE "324"
+
+#define ERR_CHANNELISFULL_CODE "471"
+#define ERR_CHANNELISFULL_MSG "Cannot join channel (+l) - channel is full"
+#define ERR_UNKNOWNMODE_CODE "472"
+#define ERR_INVITEONLYCHAN_CODE "473"
+#define ERR_INVITEONLYCHAN_MSG "Cannot join channel (+i) - you must be invited"
+#define ERR_BADCHANNELKEY_CODE "475"
+#define ERR_BADCHANNELKEY_MSG "Cannot join channel (+k) - bad key"
 
 #endif

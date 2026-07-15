@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/03 14:19:34 by ggoncalv          #+#    #+#             */
-/*   Updated: 2026/07/15 10:21:51 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/15 15:49:52 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 #include "../include/TopicCommand.hpp"
 #include "../include/InviteCommand.hpp"
 #include "../include/KickCommand.hpp"
+#include "../include/ModeCommand.hpp"
 #include <iostream>
 
 /**
@@ -40,6 +41,7 @@ CommandHandler::CommandHandler(Server& server) : _server(server) {
     _commands["TOPIC"] = new TopicCommand(server);
     _commands["INVITE"] = new InviteCommand(server);
     _commands["KICK"] = new KickCommand(server);
+    _commands["MODE"] = new ModeCommand(server);
 }
 
 /**

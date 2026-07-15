@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/07 16:59:47 by ggoncalv          #+#    #+#             */
-/*   Updated: 2026/07/10 20:54:58 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/15 15:22:10 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,23 @@ std::vector<std::string> JoinCommand::execute(Client& client, const ParsedComman
         responses.push_back(_server.buildReply(ERR_NOSUCHCHANNEL_CODE, client.getNickname(), channelName, ERR_NOSUCHCHANNEL_MSG));
         return responses;
     }
-    Channel* channel = getOrCreateChannel(channelName, client);
+    
+    Channel* channel = _server.getChannel(channelName);
+    
+    if (channel != NULL) {
+        std::string providedKey = (cmd.args.size() > 1) ? cmd.args[1] : "";
+        if (!validateAccessModes(client, channel, providedKey, responses)) {
+            return responses; // Entry denied. Error replies are populated.
+        }
+        channel->addMember(&client);
+    } 
+    // Scenario 2: Channel does not exist -> Create and grant operator status
+    else {
+        channel = new Channel(channelName);
+        _server.addChannel(channelName, channel);
+        channel->addMember(&client);
+        channel->addOperator(&client);
+    }
 
     formatJoinResponses(client, channel, channelName, responses);
     std::string joinNotification = ":" + client.getPrefix() + " JOIN :" + channelName;
@@ -57,26 +73,34 @@ bool JoinCommand::isValidChannelName(const std::string& name) const {
 }
 
 /**
- * @brief Retrieves an existing channel or creates a new one in the server.
- * If created, the initiating client is automatically granted operator privileges.
- * @param channelName The name of the channel.
- * @param client The client joining the channel.
- * @return A pointer to the requested Channel instance.
+ * @brief Evaluates the channel's active modes against the joining client's context.
+ * Checks for invite-only (+i), valid password (+k), and user limits (+l).
+ * @param client The client attempting to join.
+ * @param channel The target channel instance.
+ * @param providedKey The password argument provided by the client (if any).
+ * @param responses Vector to store the specific numeric error reply if validation fails.
+ * @return true if the client passes all mode restrictions, false otherwise.
  */
-Channel* JoinCommand::getOrCreateChannel(const std::string& channelName, Client& client) {
-    
-    Channel* channel = _server.getChannel(channelName);
+bool JoinCommand::validateAccessModes(Client& client, Channel* channel, const std::string& providedKey, std::vector<std::string>& responses) const {
+    std::string clientNick = client.getNickname();
+    std::string channelName = channel->getName();
 
-    if (channel == NULL) {
-        channel = new Channel(channelName);
-        _server.addChannel(channelName, channel);
-        channel->addMember(&client);
-        channel->addOperator(&client);
-    } else {
-        channel->addMember(&client);
+    if (channel->isInviteOnly() && !channel->isInvited(clientNick)) {
+        responses.push_back(_server.buildReply(ERR_INVITEONLYCHAN_CODE, clientNick, channelName, ERR_INVITEONLYCHAN_MSG));
+        return false;
     }
-    
-    return channel;
+
+    if (channel->hasPassword() && providedKey != channel->getPassword()) {
+        responses.push_back(_server.buildReply(ERR_BADCHANNELKEY_CODE, clientNick, channelName, ERR_BADCHANNELKEY_MSG));
+        return false;
+    }
+
+    if (channel->hasLimit() && channel->getMemberCount() >= channel->getLimit()) {
+        responses.push_back(_server.buildReply(ERR_CHANNELISFULL_CODE, clientNick, channelName, ERR_CHANNELISFULL_MSG));
+        return false;
+    }
+
+    return true;
 }
 
 /**
