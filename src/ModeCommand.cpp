@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 15:48:03 by ggoncalv          #+#    #+#             */
-/*   Updated: 2026/07/15 15:49:10 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/15 16:02:26 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,6 @@ std::vector<std::string> ModeCommand::execute(Client& client, const ParsedComman
         std::string modeMsg = ":" + client.getPrefix() + " MODE " + target + " " + changes;
         if (!argsAppended.empty()) modeMsg += argsAppended;
         channel->broadcast(modeMsg, NULL);
-        
-        // Ensure the invoker also sees their own mode change processed
-        client.queueMessage(modeMsg);
     }
 
     return replies;
