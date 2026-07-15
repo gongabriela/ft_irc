@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/03 14:19:34 by ggoncalv          #+#    #+#             */
-/*   Updated: 2026/07/15 10:17:48 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/15 10:21:51 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,9 @@
 #include "../include/PrivmsgCommand.hpp"
 #include "../include/QuitCommand.hpp"
 #include "../include/PartCommand.hpp"
+#include "../include/TopicCommand.hpp"
+#include "../include/InviteCommand.hpp"
+#include "../include/KickCommand.hpp"
 #include <iostream>
 
 /**
