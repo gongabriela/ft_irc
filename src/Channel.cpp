@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/07 17:40:19 by ggoncalv          #+#    #+#             */
-/*   Updated: 2026/07/15 09:57:26 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/15 14:54:09 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,4 +155,70 @@ void Channel::invite(const std::string& nickname) {
 */
 bool Channel::isInvited(const std::string& nickname) const {
     return std::find(_invitedNicks.begin(), _invitedNicks.end(), nickname) != _invitedNicks.end();
+}
+
+bool Channel::isInviteOnly() const { 
+    return _inviteOnly; 
+}
+
+void Channel::setInviteOnly(bool state) { 
+    _inviteOnly = state; 
+}
+
+bool Channel::isTopicRestricted() const { 
+    return _topicRestricted; 
+}
+
+void Channel::setTopicRestricted(bool state) { 
+    _topicRestricted = state; 
+}
+
+bool Channel::hasPassword() const { 
+    return !_password.empty(); 
+}
+
+const std::string& Channel::getPassword() const { 
+    return _password; 
+}
+
+void Channel::setPassword(const std::string& key) { 
+    _password = key; 
+}
+
+void Channel::removePassword() { 
+    _password.clear(); 
+}
+
+bool Channel::hasLimit() const { 
+    return _userLimit > 0; 
+}
+
+size_t Channel::getLimit() const { 
+    return _userLimit; 
+}
+
+void Channel::setLimit(size_t limit) {
+    _userLimit = limit; 
+}
+
+void Channel::removeLimit() { 
+    _userLimit = 0;
+}
+
+size_t Channel::getMemberCount() const { 
+    return _members.size(); 
+}
+
+/**
+ * @brief Constructs a string representing the currently active modes.
+ * Used for responding to empty MODE commands.
+ * @return A string formatted as "+[modes]" (e.g., "+itk").
+ */
+std::string Channel::getModes() const {
+    std::string modes = "+";
+    if (_inviteOnly) modes += "i";
+    if (_topicRestricted) modes += "t";
+    if (hasPassword()) modes += "k";
+    if (hasLimit()) modes += "l";
+    return modes;
 }

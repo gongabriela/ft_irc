@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/07 16:04:31 by ggoncalv          #+#    #+#             */
-/*   Updated: 2026/07/15 09:55:57 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/15 14:51:07 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,11 @@ class Channel {
         std::vector<Client*> _members;
         std::vector<Client*> _operators;
         std::vector<std::string> _invitedNicks;
+
+        bool _inviteOnly;
+        bool _topicRestricted;
+        std::string _password;
+        size_t _userLimit;
 
     public:
         Channel(const std::string& name);
@@ -56,6 +61,25 @@ class Channel {
 
         void invite(const std::string& nickname);
         bool isInvited(const std::string& nickname) const;
+
+        bool isInviteOnly() const;
+        void setInviteOnly(bool state);
+        
+        bool isTopicRestricted() const;
+        void setTopicRestricted(bool state);
+        
+        bool hasPassword() const;
+        const std::string& getPassword() const;
+        void setPassword(const std::string& key);
+        void removePassword();
+        
+        bool hasLimit() const;
+        size_t getLimit() const;
+        void setLimit(size_t limit);
+        void removeLimit();
+        
+        size_t getMemberCount() const;
+        std::string getModes() const;
     };
 
 #endif
