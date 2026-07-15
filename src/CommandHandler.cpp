@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/03 14:19:34 by ggoncalv          #+#    #+#             */
-/*   Updated: 2026/07/11 15:44:48 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/15 10:17:48 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,9 @@ CommandHandler::CommandHandler(Server& server) : _server(server) {
     _commands["PRIVMSG"] = new PrivmsgCommand(server);
     _commands["QUIT"] = new QuitCommand(server);
     _commands["PART"] = new PartCommand(server);
+    _commands["TOPIC"] = new TopicCommand(server);
+    _commands["INVITE"] = new InviteCommand(server);
+    _commands["KICK"] = new KickCommand(server);
 }
 
 /**
