@@ -6,14 +6,15 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/07 17:40:19 by ggoncalv          #+#    #+#             */
-/*   Updated: 2026/07/15 14:54:09 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/15 14:57:42 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Channel.hpp"
 #include <algorithm>
 
-Channel::Channel(const std::string& name) : _name(name) {}
+Channel::Channel(const std::string& name) 
+    : _name(name), _topic(""), _inviteOnly(false), _topicRestricted(false), _userLimit(0) {}
 
 Channel::~Channel() {}
 
