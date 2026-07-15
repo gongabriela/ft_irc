@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/07 17:40:19 by ggoncalv          #+#    #+#             */
-/*   Updated: 2026/07/11 15:21:46 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/15 09:57:26 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,4 +137,22 @@ void Channel::removeOperator(Client* client) {
  */
 bool Channel::isEmpty() const {
     return _members.empty();
+}
+
+/**
+* @brief Adds a nickname to the channel's VIP invite list.
+* @param nickname The exact nickname of the invited user.
+*/
+void Channel::invite(const std::string& nickname) {
+    if (!isInvited(nickname))
+        _invitedNicks.push_back(nickname);
+}
+
+/**
+* @brief Verifies if a nickname is explicitly invited to the channel.
+* @param nickname The nickname to check.
+* @return true if the user is on the invite list, false otherwise.
+*/
+bool Channel::isInvited(const std::string& nickname) const {
+    return std::find(_invitedNicks.begin(), _invitedNicks.end(), nickname) != _invitedNicks.end();
 }

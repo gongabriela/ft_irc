@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/07 16:04:31 by ggoncalv          #+#    #+#             */
-/*   Updated: 2026/07/11 15:16:10 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/15 09:55:57 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ class Channel {
         std::string _topic;
         std::vector<Client*> _members;
         std::vector<Client*> _operators;
+        std::vector<std::string> _invitedNicks;
 
     public:
         Channel(const std::string& name);
@@ -52,6 +53,9 @@ class Channel {
         void removeMember(Client* client);
         void removeOperator(Client* client);
         bool isEmpty() const;
+
+        void invite(const std::string& nickname);
+        bool isInvited(const std::string& nickname) const;
     };
 
 #endif

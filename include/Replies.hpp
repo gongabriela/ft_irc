@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/03 15:22:27 by ggoncalv          #+#    #+#             */
-/*   Updated: 2026/07/11 15:15:41 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/15 09:54:34 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,5 +77,17 @@
 // === PART ====
 #define ERR_NOTONCHANNEL_CODE "442"
 #define ERR_NOTONCHANNEL_MSG "You're not on that channel"
+
+// === TOPIC ===
+
+#define RPL_NOTOPIC_CODE "331"
+#define RPL_NOTOPIC_MSG "No topic is set"
+#define RPL_TOPIC_CODE "332"
+#define RPL_INVITING_CODE "341"
+
+#define ERR_USERNOTINCHANNEL_CODE "441"
+#define ERR_USERNOTINCHANNEL_MSG "They aren't on that channel"
+#define ERR_CHANOPRIVSNEEDED_CODE "482"
+#define ERR_CHANOPRIVSNEEDED_MSG "You're not channel operator"
 
 #endif
