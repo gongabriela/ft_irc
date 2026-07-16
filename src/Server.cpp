@@ -6,11 +6,14 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/01 12:56:39 by alde-alm          #+#    #+#             */
-/*   Updated: 2026/07/12 18:37:57 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/16 10:47:57 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
+#include <cerrno>
+
+bool Server::_isRunning = true;
 
 Server::Server(int port, const std::string &password)
 	: _port(port), _password(password), _serverFd(-1), _name(SERVER_NAME)
@@ -65,12 +68,22 @@ void Server::initSocket()
 	std::cout << BGRN "Server listening on port " BYEL << _port << NC << std::endl;
 }
 
+/**
+ * @brief Intercepts OS signals (like Ctrl+C) to gracefully shut down the server.
+ * Sets the static running flag to false, allowing the main poll loop to terminate naturally.
+ * @param signum The integer code of the intercepted signal.
+ */
+void Server::signalHandler(int signum) {
+    std::cout << "\n[Signal " << signum << "] Graceful shutdown initiated. Closing ft_irc..." << std::endl;
+    Server::_isRunning = false;
+}
+
 void Server::runIrc()
 {
 	Parser parser;
 	CommandHandler handler(*this);
 
-	while (true)
+	while (Server::_isRunning)
 	{
 		poller.wait(); // Single poll() of the project. Wait until some FD has an event
 		for (size_t i = 0; i < poller.size(); ++i)
@@ -317,3 +330,4 @@ void Server::removeChannel(const std::string& name) {
         _channels.erase(it);
     }
 }
+

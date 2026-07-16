@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/20 19:05:44 by ggoncalv          #+#    #+#             */
-/*   Updated: 2026/06/20 19:16:25 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/16 10:50:44 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,9 @@ int main(int argc, char **argv)
         return 1;
     }
 
+    signal(SIGINT, Server::signalHandler);
+    signal(SIGQUIT, Server::signalHandler);
+    
     std::cout << BYEL "Server starting on port: " << port << NC << std::endl;
     std::cout << BYEL "Password set to: " << password << NC << std::endl;
 

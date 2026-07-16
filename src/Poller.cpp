@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   Poller.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alde-alm <alde-alm@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/01 12:58:14 by alde-alm          #+#    #+#             */
-/*   Updated: 2026/07/01 12:58:15 by alde-alm         ###   ########.fr       */
+/*   Updated: 2026/07/16 10:50:10 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Poller.hpp"
+#include "../include/Poller.hpp"
+#include <cerrno>
+#include <stdexcept>
 
 Poller::Poller() {}
 
@@ -65,7 +67,14 @@ int Poller::wait() // Wait until some FD has an event
 {
 	if (_fds.empty())
 		return 0;
-	return poll(&_fds[0], _fds.size(), -1); // Return value: >0 -> number of FDs with events, 0 -> timeout (doesn't occur here because timeout is -1), <0 -> error (e.g., EINTR)
+	int result = poll(&_fds[0], _fds.size(), -1);
+	if (result < 0) {
+		if (errno == EINTR) {
+			return 0;
+		}
+		throw std::runtime_error("poll failed");
+	}
+	return result;
 }
 
 pollfd &Poller::operator[](size_t i)
