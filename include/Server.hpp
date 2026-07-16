@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/01 12:57:59 by alde-alm          #+#    #+#             */
-/*   Updated: 2026/07/11 15:33:47 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/16 10:47:19 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include "Parser.hpp"
 # include "CommandHandler.hpp"
 # include "Channel.hpp"
+# include <csignal>
 
 # define SERVER_NAME "irc.42porto.com"
 
@@ -41,6 +42,8 @@ class Server
 		void disconnectClient(int fd);
 		void removeClientFromAllChannels(Client* client);									 // Remove clients, close FD and clean up
 		
+		static bool _isRunning;
+
 	public:
 		Server(int port, const std::string &password);
 		~Server();
@@ -63,6 +66,7 @@ class Server
 		//=== for part & quit ===
 		void removeChannel(const std::string& name);
 
+		static void signalHandler(int signum);
 };	
 
 #endif
