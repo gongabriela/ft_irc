@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Channel.hpp"
+#include "../include/Channel.hpp"
 #include <algorithm>
 
 Channel::Channel(const std::string& name) 
