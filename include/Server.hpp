@@ -13,7 +13,7 @@
 #ifndef SERVER_HPP
 # define SERVER_HPP
 
-# include "Irc.hpp"
+// # include "Irc.hpp"
 # include "Poller.hpp"
 # include "Client.hpp"
 # include "Parser.hpp"

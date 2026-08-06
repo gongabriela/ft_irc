@@ -52,10 +52,10 @@ std::vector<std::string> PassCommand::execute(Client& client, const ParsedComman
 
     if (cmd.args[0] == _server.getPassword()) {
         client.setHasPassword(true);
-        std::cout << "[PassCommand] Client FD " << client.getFd() << " provided the correct password." << std::endl;
+        std::cout << BGRN"[PassCommand] Client FD " << client.getFd() << " provided the correct password." << NC << std::endl;
     } else {
         replies.push_back(_server.buildReply(ERR_PASSWDMISMATCH_CODE, "*", ERR_PASSWDMISMATCH_MSG));
-        std::cout << "[PassCommand] Client FD " << client.getFd() << " provided an incorrect password." << std::endl;
+        std::cout << BRED"[PassCommand] Client FD " << client.getFd() << " provided an incorrect password." << NC << std::endl;
     }
 
     return replies;

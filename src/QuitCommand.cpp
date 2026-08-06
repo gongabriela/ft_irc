@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   QuitCommand.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: alde-alm <alde-alm@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/11 15:23:55 by ggoncalv          #+#    #+#             */
-/*   Updated: 2026/07/11 15:36:39 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/07/31 14:30:16 by alde-alm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/QuitCommand.hpp"
-#include "../include/Replies.hpp"
+// #include "../include/Replies.hpp"
 #include <iostream>
 
-QuitCommand::QuitCommand(Server& server) : _server(server) {}
+QuitCommand::QuitCommand() {}
 QuitCommand::~QuitCommand() {}
 
 /**
@@ -25,15 +25,16 @@ QuitCommand::~QuitCommand() {}
  * @param cmd The parsed command containing an optional quit message.
  * @return An empty vector (replies are handled during the disconnect process).
  */
-std::vector<std::string> QuitCommand::execute(Client& client, const ParsedCommand& cmd) {
+std::vector<std::string> QuitCommand::execute(Client &client, const ParsedCommand &cmd)
+{
     std::vector<std::string> replies;
-    
+
     std::string reason = cmd.args.empty() ? "Leaving" : cmd.args[0];
-    std::string errorMsg = "ERROR :Closing Link: " + client.getNickname() + " (" + reason + ")";
+    std::string errorMsg = BRED "Closing Link: " + client.getNickname() + " (" + reason + ")" NC;
     client.queueMessage(errorMsg);
     client.setPendingDisconnect(true);
-    
-    std::cout << "[QuitCommand] " << client.getNickname() << " is disconnecting." << std::endl;
-    
+
+    std::cout << BCYN "[QuitCommand] " << client.getNickname() << " is disconnecting." << NC << std::endl;
+
     return replies;
 }

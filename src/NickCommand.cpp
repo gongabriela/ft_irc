@@ -58,12 +58,12 @@ std::vector<std::string> NickCommand::execute(Client& client, const ParsedComman
         return replies;
     }
     client.setNickname(nickname);
-    std::cout << "[NickCommand] Client FD " << client.getFd() << " set nickname to: " << nickname << std::endl;
+    std::cout << BGRN"[NickCommand] Client FD " << client.getFd() << " set nickname to: " << nickname << NC << std::endl;
 
     if (!client.isAuthenticated() && client.hasPassword() && !client.getNickname().empty() && !client.getUsername().empty()) {
         client.setAuthenticated(true);
         replies.push_back(_server.buildReply(RPL_WELCOME_CODE, client.getNickname(), RPL_WELCOME_MSG + client.getNickname()));
-        std::cout << "[Server] Client FD " << client.getFd() << " is now fully authenticated!" << std::endl;
+        std::cout << BMAG"[Server] Client FD " << client.getFd() << " is now fully authenticated!" << NC << std::endl;
     }
 
     return replies;

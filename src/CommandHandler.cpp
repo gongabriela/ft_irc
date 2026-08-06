@@ -36,7 +36,7 @@ CommandHandler::CommandHandler(Server& server) : _server(server) {
     _commands["NICK"] = new NickCommand(server);
     _commands["JOIN"] = new JoinCommand(server);
     _commands["PRIVMSG"] = new PrivmsgCommand(server);
-    _commands["QUIT"] = new QuitCommand(server);
+    _commands["QUIT"] = new QuitCommand();
     _commands["PART"] = new PartCommand(server);
     _commands["TOPIC"] = new TopicCommand(server);
     _commands["INVITE"] = new InviteCommand(server);
@@ -70,7 +70,7 @@ std::vector<std::string> CommandHandler::execute(Client& client, const ParsedCom
 
     if (!client.isAuthenticated() && cmd.command != "PASS" && cmd.command != "NICK" && cmd.command != "USER" && cmd.command != "QUIT") {
         replies.push_back(_server.buildReply(ERR_NOTREGISTERED_CODE, client.getNickname().empty() ? "*" : client.getNickname(), ERR_NOTREGISTERED_MSG));
-        std::cout << "[Security] Blocked unauthenticated command: " << cmd.command << " from FD " << client.getFd() << std::endl;
+        std::cout << BRED"[Security] Blocked unauthenticated command: " << cmd.command << " from FD " << client.getFd() << NC << std::endl;
         return replies;
     }
     
@@ -80,7 +80,7 @@ std::vector<std::string> CommandHandler::execute(Client& client, const ParsedCom
         replies = it->second->execute(client, cmd);
     } else {
         replies.push_back(_server.buildReply(ERR_UNKNOWNCOMMAND_CODE, cmd.command, ERR_UNKNOWNCOMMAND_MSG));
-        std::cout << "[CommandHandler] Unknown command received: " << cmd.command << std::endl;
+        std::cout << BRED"[CommandHandler] Unknown command received: " << cmd.command << NC << std::endl;
     }
 
     return replies;

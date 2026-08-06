@@ -16,7 +16,7 @@
 # include "Client.hpp"
 # include <string>
 # include <vector>
-# include <algorithm>
+// # include <algorithm>
 
 /**
  * @brief Represents an IRC channel.

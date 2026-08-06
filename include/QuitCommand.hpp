@@ -14,7 +14,7 @@
 #define QUITCOMMAND_HPP
 
 #include "ICommand.hpp"
-#include "Server.hpp"
+// #include "Server.hpp"
 
 /**
  * @brief Handles the IRC QUIT command.
@@ -23,11 +23,11 @@
  * at the end of the current read cycle to prevent memory invalidation.
  */
 class QuitCommand : public ICommand {
-    private:
-        Server& _server;
+    // private:
+    //     Server& _server;
 
     public:
-        QuitCommand(Server& server);
+        QuitCommand();
         ~QuitCommand();
 
         std::vector<std::string> execute(Client& client, const ParsedCommand& cmd);
