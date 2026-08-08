@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/01 12:57:24 by alde-alm          #+#    #+#             */
-/*   Updated: 2026/07/11 15:16:46 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/08/08 16:16:46 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ private:
 	std::string _nickname;
     std::string _username;
     std::string _realname;
-
+	std::string _quitReason;
 	bool _isPendingDisconnect;
 
 public:
@@ -70,6 +70,9 @@ public:
 
 	bool isPendingDisconnect() const;
 	void setPendingDisconnect(bool status);
+
+	const std::string& getQuitReason() const;
+    void setQuitReason(const std::string& reason);
 };
 
 #endif

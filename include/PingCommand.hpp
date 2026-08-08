@@ -1,35 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   QuitCommand.hpp                                    :+:      :+:    :+:   */
+/*   PingCommand.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/07/11 15:21:22 by ggoncalv          #+#    #+#             */
-/*   Updated: 2026/08/08 16:16:57 by ggoncalv         ###   ########.fr       */
+/*   Created: 2026/08/08 15:09:06 by ggoncalv          #+#    #+#             */
+/*   Updated: 2026/08/08 15:11:43 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef QUITCOMMAND_HPP
-#define QUITCOMMAND_HPP
+#ifndef PINGCOMMAND_HPP
+#define PINGCOMMAND_HPP
 
 #include "ICommand.hpp"
-// #include "Server.hpp"
+#include "Server.hpp"
 
-/**
- * @brief Handles the IRC QUIT command.
- * Initiates the safe disconnection process for a client.
- * Flags the client to be removed from all channels and disconnected by the Server
- * at the end of the current read cycle to prevent memory invalidation.
- */
-class QuitCommand : public ICommand {
+class PingCommand : public ICommand {
+    private:
+        Server& _server;
 
     public:
-        QuitCommand();
-        ~QuitCommand();
-
+        PingCommand(Server& server);
+        ~PingCommand();
         std::vector<std::string> execute(Client& client, const ParsedCommand& cmd);
-
 };
 
 #endif

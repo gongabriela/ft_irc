@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/01 12:58:07 by alde-alm          #+#    #+#             */
-/*   Updated: 2026/07/11 15:21:53 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/08/08 16:17:15 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,4 +201,20 @@ bool Client::isPendingDisconnect() const {
  */
 void Client::setPendingDisconnect(bool status) {
     _isPendingDisconnect = status;
+}
+
+/**
+ * @brief Retrieves the reason provided by the client upon quitting.
+ * @return The quit reason string.
+ */
+const std::string& Client::getQuitReason() const {
+    return _quitReason;
+}
+
+/**
+ * @brief Sets the reason for the client's disconnection (QUIT).
+ * @param reason The reason string specified in the QUIT command.
+ */
+void Client::setQuitReason(const std::string& reason) {
+    _quitReason = reason;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   QuitCommand.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alde-alm <alde-alm@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/11 15:23:55 by ggoncalv          #+#    #+#             */
-/*   Updated: 2026/07/31 14:30:16 by alde-alm         ###   ########.fr       */
+/*   Updated: 2026/08/08 16:17:05 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,23 @@ std::vector<std::string> QuitCommand::execute(Client &client, const ParsedComman
 {
     std::vector<std::string> replies;
 
-    std::string reason = cmd.args.empty() ? "Leaving" : cmd.args[0];
+    std::string reason = "Leaving";
+    if (!cmd.args.empty()) {
+        reason = "";
+        for (size_t i = 0; i < cmd.args.size(); ++i) {
+            reason += cmd.args[i];
+            if (i < cmd.args.size() - 1)
+                reason += " ";
+        }
+    }
+
     std::string errorMsg = BRED "Closing Link: " + client.getNickname() + " (" + reason + ")" NC;
     client.queueMessage(errorMsg);
+    client.setQuitReason(reason);
     client.setPendingDisconnect(true);
 
     std::cout << BCYN "[QuitCommand] " << client.getNickname() << " is disconnecting." << NC << std::endl;
 
     return replies;
 }
+

@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/03 15:22:27 by ggoncalv          #+#    #+#             */
-/*   Updated: 2026/07/15 14:54:49 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/08/08 15:13:01 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,5 +100,18 @@
 #define ERR_INVITEONLYCHAN_MSG BRED"Cannot join channel (+i) - you must be invited" NC
 #define ERR_BADCHANNELKEY_CODE "475"
 #define ERR_BADCHANNELKEY_MSG BRED"Cannot join channel (+k) - bad key" NC
+
+// === INVITE ===
+
+#define ERR_NOTONCHANNEL_CODE "442"
+#define ERR_NOTONCHANNEL_MSG BRED"You're not on that channel" NC
+#define ERR_USERONCHANNEL_CODE "443"
+#define ERR_USERONCHANNEL_MSG BRED"They are already on that channel" NC
+
+// === PING ===
+
+#define ERR_NOORIGIN_CODE "409"
+#define ERR_NOORIGIN_MSG BRED"No origin specified" NC
+
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 10:02:06 by ggoncalv          #+#    #+#             */
-/*   Updated: 2026/07/15 10:13:59 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/08/08 14:59:11 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,10 @@ std::vector<std::string> TopicCommand::execute(Client& client, const ParsedComma
     if (cmd.args.size() == 1) {
         handleViewTopic(client, channel, channelName);
     } else {
+        if (channel->isTopicRestricted() && !channel->isOperator(&client)) {
+            replies.push_back(_server.buildReply(ERR_CHANOPRIVSNEEDED_CODE, clientNick, channelName, ERR_CHANOPRIVSNEEDED_MSG));
+            return replies;
+        }
         handleSetTopic(client, channel, channelName, cmd.args[1]);
     }
 

@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 10:14:14 by ggoncalv          #+#    #+#             */
-/*   Updated: 2026/07/15 10:15:51 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/08/08 14:07:52 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ std::vector<std::string> InviteCommand::execute(Client& client, const ParsedComm
     std::string channelName = cmd.args[1];
 
     Channel* channel = _server.getChannel(channelName);
-    if (!channel) {
-        replies.push_back(_server.buildReply(ERR_NOSUCHCHANNEL_CODE, clientNick, channelName, ERR_NOSUCHCHANNEL_MSG));
+    if (!channel || !channel->isMember(&client)) {
+        replies.push_back(_server.buildReply(ERR_NOTONCHANNEL_CODE, clientNick, channelName, ERR_NOTONCHANNEL_MSG));
         return replies;
     }
 
@@ -55,6 +55,11 @@ std::vector<std::string> InviteCommand::execute(Client& client, const ParsedComm
     Client* targetClient = _server.getClientByNickname(targetNick);
     if (!targetClient) {
         replies.push_back(_server.buildReply(ERR_NOSUCHNICK_CODE, clientNick, targetNick, ERR_NOSUCHNICK_MSG));
+        return replies;
+    }
+
+    if (channel->isMember(targetClient)) {
+        replies.push_back(_server.buildReply(ERR_USERONCHANNEL_CODE, clientNick, targetNick + " " + channelName, ERR_USERONCHANNEL_MSG));
         return replies;
     }
 

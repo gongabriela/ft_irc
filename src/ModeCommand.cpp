@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ModeCommand.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alde-alm <alde-alm@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/15 15:48:03 by ggoncalv          #+#    #+#             */
-/*   Updated: 2026/07/31 14:04:14 by alde-alm         ###   ########.fr       */
+/*   Updated: 2026/08/08 17:18:42 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,11 @@ std::vector<std::string> ModeCommand::execute(Client &client, const ParsedComman
     std::string target = cmd.args[0];
 
     if (target[0] != '#' && target[0] != '&')
+    {
+        replies.push_back(_server.buildReply(ERR_NOSUCHCHANNEL_CODE, clientNick, target, ERR_NOSUCHCHANNEL_MSG));
         return replies;
-
+    }
+    
     Channel *channel = _server.getChannel(target);
     if (!channel)
     {

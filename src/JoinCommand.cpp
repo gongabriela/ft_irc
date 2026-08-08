@@ -6,7 +6,7 @@
 /*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/07 16:59:47 by ggoncalv          #+#    #+#             */
-/*   Updated: 2026/07/15 15:22:10 by ggoncalv         ###   ########.fr       */
+/*   Updated: 2026/08/08 16:46:15 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,9 @@ std::vector<std::string> JoinCommand::execute(Client& client, const ParsedComman
     Channel* channel = _server.getChannel(channelName);
     
     if (channel != NULL) {
+        if (channel->isMember(&client)) {
+            return responses; 
+        }
         std::string providedKey = (cmd.args.size() > 1) ? cmd.args[1] : "";
         if (!validateAccessModes(client, channel, providedKey, responses)) {
             return responses; // Entry denied. Error replies are populated.
@@ -55,6 +58,9 @@ std::vector<std::string> JoinCommand::execute(Client& client, const ParsedComman
         _server.addChannel(channelName, channel);
         channel->addMember(&client);
         channel->addOperator(&client);
+        if (cmd.args.size() > 1) {
+            channel->setPassword(cmd.args[1]);
+        }
     }
 
     formatJoinResponses(client, channel, channelName, responses);
@@ -69,7 +75,10 @@ std::vector<std::string> JoinCommand::execute(Client& client, const ParsedComman
  * @return true if valid (starts with '#' or '&'), false otherwise.
  */
 bool JoinCommand::isValidChannelName(const std::string& name) const {
-    return (!name.empty() && (name[0] == '#' || name[0] == '&'));
+    if (!name.empty() && (name[0] == '#' || name[0] == '&') && name[1] != '\0') {
+        return true;
+    }
+    return false;
 }
 
 /**

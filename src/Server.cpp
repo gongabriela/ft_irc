@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alde-alm <alde-alm@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/01 12:56:39 by alde-alm          #+#    #+#             */
-/*   Updated: 2026/07/31 15:51:20 by alde-alm         ###   ########.fr       */
+/*   Updated: 2026/08/08 17:09:10 by ggoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,6 +207,9 @@ void Server::handleRead(int fd, Parser &parser, CommandHandler &handler)
  */
 void Server::handleWrite(int fd)
 {
+	if (_clients.find(fd) == _clients.end())
+        return;
+	
 	Client *client = _clients[fd];
 	std::string &out = client->getSendBuffer();
 
@@ -240,13 +243,15 @@ void Server::handleWrite(int fd)
 void Server::removeClientFromAllChannels(Client *client)
 {
 	std::map<std::string, Channel *>::iterator it = _channels.begin();
-
+	std::string reason = client->getQuitReason().empty() ? "Client disconnected" : client->getQuitReason();
+	std::string quitMessage = ":" + client->getPrefix() + " QUIT :" + reason;
+	
 	while (it != _channels.end())
 	{
 		Channel *chan = it->second;
 		if (chan->isMember(client))
 		{
-			chan->broadcast(BMAG ":" + client->getPrefix() + " QUIT :Client disconnected" NC, NULL);
+			chan->broadcast(BMAG + quitMessage + NC, client);
 			chan->removeMember(client);
 			chan->removeOperator(client);
 		}
@@ -261,6 +266,11 @@ void Server::removeClientFromAllChannels(Client *client)
 		else
 		{
 			++it;
+		}
+	for (std::map<int, Client *>::iterator it_client = _clients.begin(); it_client != _clients.end(); ++it_client)
+		{
+			if (it_client->second->hasDataToSend())
+				poller.enable(it_client->first, POLLOUT);
 		}
 	}
 }

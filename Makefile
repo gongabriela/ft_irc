@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: alde-alm <alde-alm@student.42porto.com>    +#+  +:+       +#+         #
+#    By: ggoncalv <ggoncalv@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/07/06 11:14:47 by ggoncalv          #+#    #+#              #
-#    Updated: 2026/08/02 00:08:10 by alde-alm         ###   ########.fr        #
+#    Updated: 2026/08/08 15:17:05 by ggoncalv         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ SRCS := src/main.cpp src/Server.cpp src/Poller.cpp src/Client.cpp src/Parser.cpp
 		src/NickCommand.cpp src/Channel.cpp src/JoinCommand.cpp\
 		src/PrivmsgCommand.cpp src/PartCommand.cpp src/QuitCommand.cpp\
 		src/TopicCommand.cpp src/InviteCommand.cpp src/KickCommand.cpp\
-		src/ModeCommand.cpp
+		src/ModeCommand.cpp src/PingCommand.cpp
 
 OBJS := $(SRCS:.cpp=.o)
 
